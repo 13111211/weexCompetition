@@ -1,4 +1,0 @@
-# git .gitignore配置文件用于配置不需要加入版本管理的文件
-weex_tmp
-node_modules
-.idea/*
