@@ -1,0 +1,194 @@
+<template>
+  <div>
+    <image style="width:750;height:1200" src="{{Imgurl}}"></image>
+    <div id="dialog" class="dialog" id="dialog1" if={{ifshow}}>
+      <div class="dialog-backdrop"></div>
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <text class="dialog-title">{{dialogTitle}}</text>
+          <!-- <text class="close" onclick="closedialog">×</text> -->
+        </div>
+        <!-- <text class="select_player">{{select_player}}</text> -->
+        <div class="final_box" if={{finalifshow}}>
+           	<text class="final_player">{{failed_player}}</text>
+        </div>
+        <div class="dialog-body1" if={{selectifshow}}>
+			<list class="select_list">
+	            <cell repeat="item in arr">
+	                <div class="listdiv">
+	                  <text class="list_item" onclick="doselect">玩家{{arr[$index].id}}</text>
+	                </div>
+	            </cell>
+        	</list>
+        </div>
+        <div class="dialog-body">
+            <text class="select_btn" onclick="select_depend" if = {{btnifshow}}>{{btn}}</text>
+        </div>
+      </div>
+    </div>
+  </div> 
+</template>
+
+<style>
+.dialog-backdrop {
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+}
+.dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-content {
+  width: 450;
+  background-color: #FFFFFF;
+  /* border:2px solid black; */
+  border-radius:10px;
+  position: relative;
+}
+.dialog-header {
+  padding: 20;
+  position: relative;
+}
+.dialog-title{
+  font-size:35;
+  color:black;
+}
+
+.select_player{
+  flex:2.5;
+  /*border:1px solid black;*/
+  font-size:35;
+  text-align:left;
+  color:black;
+  margin-right:10;
+}
+
+.select_btn{
+  flex:1.5;
+  margin-left:55px;
+  color:black;
+  font-size:35;
+}
+.dialog-body1{
+	flex-direction:row;
+  	justify-content:center;
+  	padding: 20;
+  	height:300;
+}
+.dialog-body {
+  flex-direction:row;
+  justify-content:center;
+  padding: 20;
+  background-color:#FFFFFF;
+  border-radius:10px;
+}
+.final_box{
+	padding: 20;
+}
+/* .close {
+  font-size: 20;
+  color:black;
+  position: absolute;
+  right: 10;
+  top: 10;
+} */
+.final_player{
+	font-size:30;
+}
+.list_item{
+	font-size:30;
+}
+
+</style>
+
+<script>
+var dom = require('@weex-module/dom')
+  module.exports = {
+    data: {
+      arr: [
+      {id: 1},
+      {id: 2},
+      {id: 3},
+      {id: 4},
+      {id: 5},
+      {id: 6},
+      {id: 7},
+      {id: 8},
+      {id: 9},
+      {id: 10},
+      {id: 11},
+      {id: 12},
+      {id: 13},
+      {id: 14}
+      ],
+      current_player:11,
+      failed_player:"",
+      ifshow: true,
+      selectifshow: false,
+      finalifshow:false,
+      dialogTitle: '落败的玩家是:',
+      Imgurl:'https://13111211.github.io/weexCompetition/imgs/background/bg.png',
+      btn:"选择",
+      btnifshow:true
+    },
+    created:function (){
+      
+      this.arr.splice(this.current_player - 1,1);
+      /*var modal = require('@weex-module/modal');
+      var self = this;
+        modal.alert({
+          'message': this.arr,
+          'okTitle': 'YES'
+        }, function (result) {
+          self.params = String(result)
+        });*/
+    },
+    methods: {
+      closedialog: function(){
+        this.ifshow=false;
+      },
+      opendialog2: function(){
+        this.selectifshow = true;
+      },
+      select_depend: function(){
+      	if(this.btn == "选择")
+      	{
+      		this.selectifshow=true;
+      		this.btnifshow = false;
+      	}
+        else{
+        	this.ifshow = false;
+        }
+        },
+      closeselectdialog: function(){
+        this.selectifshow = false;
+        this.ifshow=true;
+      },
+      doselect: function(e){
+        /*var modal = require('@weex-module/modal');
+        var self = this;
+        modal.alert({
+          'message': e.target,
+          'okTitle': 'YES'
+        }, function (result) {
+          self.params = String(result)
+        });*/
+        this.selectifshow = false;
+        this.finalifshow = true;
+        this.failed_player = e.target.attr.value;
+        this.btnifshow=true;
+        this.btn = "确定";
+      }
+    }
+  }
+</script>

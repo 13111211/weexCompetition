@@ -1,0 +1,122 @@
+<template>
+  <div>
+    <image style="width:750;height:1200" src="{{Imgurl}}"></image>
+    <div id="dialog" class="dialog" id="dialog1" if={{ifshow}}>
+      <div class="dialog-backdrop"></div>
+      <div class="dialog-content">
+        <scroller class="radio_list" if={{selectifshow}}>
+            <div title="picker module">
+              <div class="titlediv">
+                <text class="Title">{{Title}}</text>
+                <text class="failedplayer">{{value}}</text> 
+              </div>
+              <!-- 应该也可以加button组件吧？这块可以后面再加 -->
+              <text class="radiobtn" type="default" size="middle" value={{Selectbtn}} onclick="pick"></text>
+            </div>
+          </scroller>
+      </div>
+    </div>
+  </div> 
+</template>
+
+<style>
+.dialog-backdrop {
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+}
+.dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-content {
+  width: 450;
+ /*  height:200; */
+  background-color: #FFFFFF;
+  /* border:2px solid black; */
+  border-radius:10px;
+  position: relative;
+}
+.titlediv{
+  flex-direction:row;
+}
+.Title{
+  margin-top:20;
+  margin-left:30;
+  /* margin-bottom: 20px; */
+  font-size:30;
+  border-bottom:1px solid #CCCCCC;
+}
+
+.radiobtn{
+  /* width: 180px;
+  height: 50px; 
+  border-color: #26a4f4; */
+  font-color: #26a4f4;
+  /* border-width: 2px */
+  margin-top:20;
+  margin-left:30;
+  margin-bottom: 30px;
+  font-size:30;
+}
+.failedplayer{
+  font-size:30;
+  margin-top:20;
+  font-style:italic;
+}
+
+
+.radio_list{
+  margin:50px auto;
+}
+
+</style>
+
+<script>
+var dom = require('@weex-module/dom')
+  module.exports = {
+    data: {
+      Title:"落败的玩家是：",
+      value: '',
+      index: 0,
+      Selectbtn: "请选择",
+      current_player:11,
+      select_player:5,
+      failed_player:"",
+      ifshow: true,
+      selectifshow: true,
+      finalifshow:false,
+      /*dialogTitle: '落败的玩家是:',*/
+      Imgurl:'https://13111211.github.io/weexCompetition/imgs/background/bg.png',
+      btn:"选择",
+      btnifshow:true
+    },
+    methods: {
+      pick: function() {
+        var picker = require('@weex-module/picker');
+        var items = new Array('玩家'+this.current_player,'玩家'+this.select_player);
+        var self = this;
+        picker.pick({
+          'items':items,
+          'index':self.index
+        },function (ret) {
+          var result = ret.result;
+          if(result == 'success')
+          {
+            self.value = items[ret.data];
+            self.index = ret.data;
+          }
+        });
+      }
+    }
+  }
+</script>

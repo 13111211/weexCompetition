@@ -1,0 +1,143 @@
+<template>
+	<div>
+		<image class="bgimg" style="width:750;height:1200" src="{{Imgurl}}"></image>
+		<div class="select_title">
+			<text class="title">{{PlayerNumber}}</text>
+		</div>
+		<scroller class="scroller_list" show-scrollbar="true" scroll-direction="horizontal">
+			<div class="select_list" repeat="v in arr">
+				<text id="select_id" class="list_item" onclick="selected($event)">{{v.id}}</text>
+			</div>
+		</scroller>
+		<div class="btn" onclick="start">
+			<!-- 开始游戏按钮 -->
+			<text class="button" if={{intervalifshow}}>开始游戏</text>
+		</div>
+	</div>
+</template>
+
+<script>
+	var timer1;
+	module.exports = {
+	data:{
+		arr:[
+		{id: 4},
+		{id: 5},
+		{id: 6},
+		{id: 7},
+		{id: 8},
+		{id: 9},
+		{id: 10},
+		{id: 11},
+		{id: 12},
+		{id: 13},
+		{id: 14}
+		],
+		Imgurl: 'https://13111211.github.io/weexCompetition/imgs/background/bg.png',
+		PlayerNumber: "请选择游戏人数",
+		intervalifshow: true,
+		TotalNum: ""
+	},
+	methods:{
+		ready: function(){
+			timer1 = setInterval(this.show.bind(this),500);
+		},	
+		show: function() {
+			if(this.intervalifshow)
+			{
+				this.intervalifshow = false;	
+			}
+			else{
+				this.intervalifshow = true;
+			}
+		},
+		selected: function(e){
+			this.TotalNum = e.target.attr['value'];
+			var modal = require('@weex-module/modal');
+	        var self = this;
+	        modal.alert({
+	          'message': this.TotalNum,
+	          'okTitle': 'YES'
+	        }, function (result) {
+	          self.params = String(result)
+	        });
+		},
+		start: function(){
+			clearInterval(timer1);
+			var modal = require('@weex-module/modal');
+	        var self = this;
+	        modal.alert({
+	          'message': "Start",
+	          'okTitle': 'YES'
+	        }, function (result) {
+	          self.params = String(result)
+	        });
+	        this.intervalifshow = true;
+			/*跳到Start页面*/
+		}
+	}
+}
+</script>
+
+<style>
+	.bgimg{
+		position:absolute;
+		left:0;
+		top:0;
+		bottom:0;
+		right:0;
+	}
+	.select_title{
+		position:relative;
+		top:220;
+		/* border:2px solid black;  */
+		/* text-align:center; */
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		font-size:40;
+		font-style:italic;
+		font-weight:bold;
+	}
+	.scroller_list{
+		height:70;
+		width:260;
+		position:relative;
+		top:230;
+		left:270;
+		 border:2px solid white; 
+		border-radius:15;
+		 /* background-color:pink;  */
+		 background: radial-gradient(rgba(255,255,255,0.3),rgba(255,255,255,1)); 
+		/* justify-content:center; */
+		 align-items:center; 
+		/* opacity:0.7; */
+	}
+	.select_list{
+		height:55;
+		margin-left:30;
+		margin-right:10;
+	/*	border:1px solid black;*/
+	}
+	.list_item{
+		font-size:45;
+		text-align:center;
+		line-height:70;
+		font-color:black;
+		font-weight:bold;
+		font-style:italic;
+	}
+	.btn{
+		position:relative;
+		top:550;
+		/* border:1px solid black; */
+		height:80;
+		width:300;
+		margin-left:215;
+	}
+	.button{
+		font-size:60;
+		text-align:center;
+	}
+</style>
